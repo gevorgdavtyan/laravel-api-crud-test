@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class UserRepository
@@ -22,13 +23,12 @@ class UserRepository
      * @param $params
      * @return array
      */
-    public function registerNewUser($params): array
+    public function register($params): array
     {
         return $this->generateUserToken(User::create($params));
     }
 
     /**
-     * @param $params
      * @return array
      */
     public function login(): array
@@ -46,6 +46,22 @@ class UserRepository
             'token' => $user->createToken('CrudApp')->plainTextToken,
             'name' => $user->name,
         ];
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAll(): Collection
+    {
+        return User::all();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosts(): mixed
+    {
+        return Auth::user()->posts()->get();
     }
 
 }

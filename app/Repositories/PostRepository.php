@@ -36,7 +36,7 @@ class PostRepository
     /**
      * @return Collection
      */
-    public function all(): Collection
+    public function getAll(): Collection
     {
         return Post::all();
     }

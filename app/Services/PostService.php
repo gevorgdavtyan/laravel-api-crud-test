@@ -39,14 +39,14 @@ class PostService
      */
     public function getAll(): AnonymousResourceCollection
     {
-        return PostResource::collection($this->postRep->all());
+        return PostResource::collection($this->postRep->getAll());
     }
 
     /**
      * @param array $params
      * @return PostResource
      */
-    public function createNewPost(array $params): PostResource
+    public function create(array $params): PostResource
     {
         $validator = Validator::make($params, [
             'title' => 'required|max:70',
@@ -60,13 +60,12 @@ class PostService
         return new PostResource($this->postRep->save($params));
     }
 
-
     /**
      * @param $post
      * @param $params
      * @return PostResource
      */
-    public function updatePost($post, $params): PostResource
+    public function update($post, $params): PostResource
     {
         $validator = Validator::make($params, [
             'title' => 'required|max:70',
@@ -84,7 +83,7 @@ class PostService
      * @param $post
      * @return bool|null
      */
-    public function deletePost($post): ?bool
+    public function delete($post): ?bool
     {
         return $this->postRep->deleteOwnPost($post);
     }

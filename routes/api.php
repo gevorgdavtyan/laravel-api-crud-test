@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,11 +26,14 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
 });
 
-
-
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('posts', PostController::class);
+    Route::get('users', [UserController::class, 'index']);
+    Route::get('user/posts', [UserController::class, 'showPosts']);
 
+    Route::resource('posts', PostController::class);
+    Route::post('posts/{post}/comments', [CommentController::class, 'store']);
+
+    //todo delete after test
     Route::get('auth-check', function () {
         return response()->json(['valid' => auth()->check()]);
     });

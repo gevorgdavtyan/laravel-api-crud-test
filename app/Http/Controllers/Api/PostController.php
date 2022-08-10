@@ -42,7 +42,7 @@ class PostController extends BaseController
     public function store(Request $request): JsonResponse
     {
         try {
-            $result = $this->postService->createNewPost($request->all());
+            $result = $this->postService->create($request->all());
         } catch (Exception $exception) {
             return $this->sendError('Validation Error.', ['error' => $exception->getMessage()], 422);
         }
@@ -77,7 +77,7 @@ class PostController extends BaseController
     public function update(Request $request, Post $post): JsonResponse
     {
         try {
-            $result = $this->postService->updatePost($post, $request->all());
+            $result = $this->postService->update($post, $request->all());
         } catch (InvalidArgumentException $exception) {
             return $this->sendError('Validation Error.', ['error' => $exception->getMessage()], 422);
         } catch (ModelNotFoundException $exception) {
@@ -96,11 +96,12 @@ class PostController extends BaseController
     public function destroy(Post $post): JsonResponse
     {
         try {
-            $this->postService->deletePost($post);
+            $this->postService->delete($post);
         } catch (Exception $exception) {
             return $this->sendError('Post not found.', ['error' => $exception->getMessage()]);
         }
 
         return $this->sendResponse([], 'Post deleted successfully.');
     }
+
 }

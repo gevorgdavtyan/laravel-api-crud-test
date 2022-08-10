@@ -18,7 +18,7 @@ class AuthController extends BaseController
     public function register(Request $request, UserService $userService)
     {
         try {
-            $result = $userService->registerNewUser($request->all());
+            $result = $userService->register($request->all());
         } catch (\Exception $exception) {
             return $this->sendError('Validation Error.', ['error' => $exception->getMessage()], 422);
         }

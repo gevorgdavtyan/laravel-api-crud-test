@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Http\Resources\PostResource;
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\UnauthorizedException;
@@ -24,7 +27,7 @@ class UserService
      * @param $params
      * @return array|InvalidArgumentException
      */
-    public function registerNewUser($params)
+    public function register($params)
     {
         $validator = Validator::make($params, [
             'name' => 'required',
@@ -37,7 +40,7 @@ class UserService
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
-        return $this->userRep->registerNewUser($params);
+        return $this->userRep->register($params);
     }
 
     public function login($params): array
@@ -49,4 +52,21 @@ class UserService
             throw new UnauthorizedException('Unauthorised');
         }
     }
+
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function getAll(): AnonymousResourceCollection
+    {
+        return UserResource::collection($this->userRep->getAll());
+    }
+
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function getUserPosts(): AnonymousResourceCollection
+    {
+        return PostResource::collection($this->userRep->getPosts());
+    }
+
 }
