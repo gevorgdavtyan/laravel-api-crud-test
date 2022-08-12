@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('posts', PostController::class);
     Route::post('posts/{post}/comments', [CommentController::class, 'store']);
+    Route::get('posts/{post}/comments', [CommentController::class, 'showPostComments']);
 
     //todo delete after test
     Route::get('auth-check', function () {

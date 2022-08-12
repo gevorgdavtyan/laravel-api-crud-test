@@ -39,4 +39,19 @@ class CommentController extends BaseController
         return $this->sendResponse($result, 'Comment created successfully.');
     }
 
+    /**
+     * @param Post $post
+     * @return JsonResponse
+     */
+    public function showPostComments(Post $post): JsonResponse
+    {
+        try {
+            $result = $this->commentService->getPostCommentsWithChildren($post);
+        } catch (Exception $exception) {
+            return $this->sendError('Post not found.', ['error' => $exception->getMessage()]);
+        }
+
+        return $this->sendResponse($result, 'Comment retrieved successfully.');
+    }
+
 }

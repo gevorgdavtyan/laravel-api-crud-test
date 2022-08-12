@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Repositories\CommentRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
@@ -38,4 +39,18 @@ class CommentService
 
         return new CommentResource($this->commentRep->save($post, $params));
     }
+
+    /**
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getPostCommentsWithChildren(\App\Models\Post $post)
+    {
+        if (!$post) {
+            throw new ModelNotFoundException('Post not found.');
+        }
+
+        return $this->commentRep->getPostCommentsWithChildren($post);
+    }
+
 }

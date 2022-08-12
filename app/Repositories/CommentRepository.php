@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class CommentRepository
@@ -45,6 +47,15 @@ class CommentRepository
         ]));
 
         return $comment->fresh();
+    }
+
+    /**
+     * @param Post $post
+     * @return Collection
+     */
+    public function getPostCommentsWithChildren(Post $post): Collection
+    {
+        return $post->commentsWithChildren()->get();
     }
 
 }
